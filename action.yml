@@ -1,0 +1,7 @@
+name: "Log files changed"
+description: "Log files changed on commit"
+author: "Razvan Tudorache"
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
