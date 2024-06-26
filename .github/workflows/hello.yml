@@ -2,7 +2,7 @@ name: "Hello"
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, edited]
    
 jobs:
   hello:
@@ -10,21 +10,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 2
-      - name: Process files changed in the current commit
+          since_last_remote_commit: true
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          changedFiles=$(git diff --name-only HEAD^)
-          for file in $changedFiles; do
-            echo "Processing file: $file"
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
           done
-#      - name: Get changes
-#        id: changed-files
-#        run: git diff --name-only -r HEAD^1 HEAD >> "$GITHUB_OUTPUT"
       - name: Run action
         uses: ./
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
-          files: $(git diff --name-only HEAD^)
+          files: ${{ steps.changed-files.outputs.all_changed_files }}
