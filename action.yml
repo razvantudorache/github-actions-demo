@@ -2,6 +2,14 @@ name: "Log files changed"
 description: "Log files changed on commit"
 author: "Razvan Tudorache"
 
+inputs:
+  gh-token:
+    description: 'The Github token for authentication'
+    required: true
+  label:
+    description: 'The label to be applied to the pull request'
+    required: true
+
 runs:
   using: "node20"
   main: "dist/index.js"
