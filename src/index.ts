@@ -1,11 +1,23 @@
 import { getInput, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 
+const fs = require('fs').promises;
+
+async function example(filePath: string) {
+  try {
+    const data = await fs.readFile(filePath, { encoding: 'utf8' });
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function run() {
   const token = getInput("gh-token");
   const label = getInput("label");
+  const workspace = getInput("workspace");
 
-  console.log("Length: ", getInput("files"))
+  console.log(workspace);
 
   const octokit = getOctokit(token);
   const pullRequest = context.payload.pull_request;
@@ -21,6 +33,9 @@ export async function run() {
       issue_number: pullRequest.number,
       labels: [label],
     });
+
+    await example(getInput("files").split(' ')[0]);
+
   } catch (error) {
     setFailed((error as Error)?.message ?? "Unknown error");
   }
