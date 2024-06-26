@@ -18,9 +18,7 @@ jobs:
         run: git diff --name-only -r HEAD^1 HEAD >> "$GITHUB_OUTPUT"
       - name: Run action
         uses: ./
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs }}
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
-          files: ${{ ALL_CHANGED_FILES }}
+          files: ${{ steps.changed-files.outputs }}
