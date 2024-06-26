@@ -1,2 +1,3 @@
-# github-actions-demo
-Github actions playground
+# ga-label-issue
+
+Add a label on new PRs

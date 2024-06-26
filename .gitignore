@@ -90,6 +90,7 @@ out
 # Nuxt.js build / generate output
 .nuxt
 
+
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
@@ -128,5 +129,5 @@ out
 .yarn/install-state.gz
 .pnp.*
 
-.idea
 lib
+.idea

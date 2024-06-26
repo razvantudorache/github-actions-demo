@@ -3,15 +3,14 @@ name: "Hello"
 on:
   pull_request:
     types: [opened, reopened]
-
+   
 jobs:
   hello:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
+          files: $(git diff --name-only HEAD^)

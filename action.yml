@@ -1,15 +1,22 @@
-name: "Log files changed"
-description: "Log files changed on commit"
-author: "Razvan Tudorache"
+name: "Label new pull requests"
+description: "Add a label when a new PR is opened."
+author: "Leonardo Montini"
 
 inputs:
   gh-token:
-    description: 'The Github token for authentication'
+    description: 'The GitHub token for authentication.'
     required: true
   label:
-    description: 'The label to be applied to the pull request'
+    description: 'The label to be applied to the pull request.'
+    required: true
+  files:
+    description: 'Committed files'
     required: true
 
 runs:
   using: "node20"
   main: "dist/index.js"
+
+branding:
+  icon: 'activity'
+  color: 'green'
