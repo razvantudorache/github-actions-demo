@@ -9796,11 +9796,20 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
+const fs = (__nccwpck_require__(7147).promises);
+async function example(filePath) {
+    try {
+        const data = await fs.readFile(filePath, { encoding: 'utf8' });
+        console.log(data);
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
 async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
     const label = (0, core_1.getInput)("label");
-    console.log("Length: ", (0, core_1.getInput)("files"));
     const octokit = (0, github_1.getOctokit)(token);
     const pullRequest = github_1.context.payload.pull_request;
     try {
@@ -9813,6 +9822,7 @@ async function run() {
             issue_number: pullRequest.number,
             labels: [label],
         });
+        await example((0, core_1.getInput)("files").split(' ')[0]);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
