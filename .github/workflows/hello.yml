@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
