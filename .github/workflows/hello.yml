@@ -29,3 +29,4 @@ jobs:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
           files: ${{ steps.changed-files.outputs.all_changed_files }}
+          workspace: ${{ github.workspace }}

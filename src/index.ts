@@ -15,6 +15,9 @@ async function example(filePath: string) {
 export async function run() {
   const token = getInput("gh-token");
   const label = getInput("label");
+  const workspace = getInput("workspace");
+
+  console.log(workspace);
 
   const octokit = getOctokit(token);
   const pullRequest = context.payload.pull_request;
