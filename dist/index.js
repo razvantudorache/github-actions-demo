@@ -8641,8 +8641,7 @@ function parseHost(input, isSpecialArg) {
   if (!isSpecialArg) {
     return parseOpaqueHost(input);
   }
-
-  const domain = utf8PercentDecode(input);
+ = utf8PercentDecode(input);
   const asciiDomain = tr46.toASCII(domain, false, tr46.PROCESSING_OPTIONS.NONTRANSITIONAL, false);
   if (asciiDomain === null) {
     return failure;
@@ -9800,7 +9799,9 @@ async function run() {
     var _a;
     const token = (0, core_1.getInput)("gh-token");
     const label = (0, core_1.getInput)("label");
-    console.log("Length: ", (0, core_1.getInput)("files").length);
+
+    console.log("Length: ", (0, core_1.getInput)("files"));
+
     const octokit = (0, github_1.getOctokit)(token);
     const pullRequest = github_1.context.payload.pull_request;
     try {
