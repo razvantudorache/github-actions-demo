@@ -13,12 +13,18 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 2
-      - name: Get changes
-        id: changed-files
-        run: git diff --name-only -r HEAD^1 HEAD >> "$GITHUB_OUTPUT"
+      - name: Process files changed in the current commit
+          run: |
+            changedFiles=$(git diff --name-only HEAD^)
+            for file in $changedFiles; do
+              echo "Processing file: $file"
+            done
+#      - name: Get changes
+#        id: changed-files
+#        run: git diff --name-only -r HEAD^1 HEAD >> "$GITHUB_OUTPUT"
       - name: Run action
         uses: ./
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           label: 'needs-review'
-          files: ${{ steps.changed-files.outputs }}
+          files: $(git diff --name-only HEAD^)
