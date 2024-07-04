@@ -1,6 +1,55 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 4822:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
+const core_1 = __nccwpck_require__(2186);
+const github_1 = __nccwpck_require__(5438);
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
+const promises_1 = __nccwpck_require__(3977);
+async function run() {
+    var _a;
+    const token = (0, core_1.getInput)("gh-token");
+    const label = (0, core_1.getInput)("label");
+    const workspace = (0, core_1.getInput)("workspace");
+    const files = await (0, promises_1.readdir)(workspace, { withFileTypes: true, recursive: true });
+    for (const file of files) {
+        console.log(node_path_1.default.resolve(file.path, file.name));
+    }
+    console.log(workspace);
+    const octokit = (0, github_1.getOctokit)(token);
+    const pullRequest = github_1.context.payload.pull_request;
+    try {
+        if (!pullRequest) {
+            throw new Error("This action can only be run on Pull Requests");
+        }
+        await octokit.rest.issues.addLabels({
+            owner: github_1.context.repo.owner,
+            repo: github_1.context.repo.repo,
+            issue_number: pullRequest.number,
+            labels: [label],
+        });
+    }
+    catch (error) {
+        (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
+    }
+}
+exports.run = run;
+if (!process.env.JEST_WORKER_ID) {
+    run();
+}
+
+
+/***/ }),
+
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -9676,6 +9725,22 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ 3977:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
+
+/***/ }),
+
+/***/ 9411:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:path");
+
+/***/ }),
+
 /***/ 2037:
 /***/ ((module) => {
 
@@ -9786,45 +9851,12 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.run = void 0;
-const core_1 = __nccwpck_require__(2186);
-const github_1 = __nccwpck_require__(5438);
-async function run() {
-    var _a;
-    const token = (0, core_1.getInput)("gh-token");
-    const label = (0, core_1.getInput)("label");
-    console.log("Length: ", (0, core_1.getInput)("files"));
-    const octokit = (0, github_1.getOctokit)(token);
-    const pullRequest = github_1.context.payload.pull_request;
-    try {
-        if (!pullRequest) {
-            throw new Error("This action can only be run on Pull Requests");
-        }
-        await octokit.rest.issues.addLabels({
-            owner: github_1.context.repo.owner,
-            repo: github_1.context.repo.repo,
-            issue_number: pullRequest.number,
-            labels: [label],
-        });
-    }
-    catch (error) {
-        (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
-    }
-}
-exports.run = run;
-if (!process.env.JEST_WORKER_ID) {
-    run();
-}
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4822);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
