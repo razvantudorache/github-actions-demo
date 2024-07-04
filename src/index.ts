@@ -1,21 +1,18 @@
 import { getInput, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
-
-const fs = require('fs').promises;
-
-async function example(filePath: string) {
-  try {
-    const data = await fs.readFile(filePath, { encoding: 'utf8' });
-    console.log(data);
-  } catch (err) {
-    console.log(err);
-  }
-}
+import path from "node:path";
+import {readdir} from "node:fs/promises";
 
 export async function run() {
   const token = getInput("gh-token");
   const label = getInput("label");
   const workspace = getInput("workspace");
+
+  const files = await readdir(workspace, {withFileTypes: true, recursive: true});
+
+  for (const file of files) {
+    console.log(path.resolve(file.path, file.name))
+  }
 
   console.log(workspace);
 
@@ -33,8 +30,6 @@ export async function run() {
       issue_number: pullRequest.number,
       labels: [label],
     });
-
-    await example(getInput("files").split(' ')[0]);
 
   } catch (error) {
     setFailed((error as Error)?.message ?? "Unknown error");
